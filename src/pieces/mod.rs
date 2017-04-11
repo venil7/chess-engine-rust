@@ -1,8 +1,9 @@
 use std::fmt;
 
 pub mod pawn;
-pub enum Pieces {
-    // Empty,
+
+#[derive(PartialEq,Debug)]
+pub enum PieceType {
     Pawn,
     Knight,
     Rook,
@@ -12,6 +13,5 @@ pub enum Pieces {
 }
 
 pub trait Piece: fmt::Display {
+    fn get_type(&self) -> PieceType;
 }
-// pub struct Empty;
-// impl Piece for Empty {}
