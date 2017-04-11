@@ -1,6 +1,8 @@
+use std::fmt;
+
 pub mod pawn;
 pub enum Pieces {
-    Empty,
+    // Empty,
     Pawn,
     Knight,
     Rook,
@@ -9,6 +11,7 @@ pub enum Pieces {
     King,
 }
 
-pub trait Piece {}
-pub struct Empty;
-impl Piece for Empty {}
+pub trait Piece: fmt::Display {
+}
+// pub struct Empty;
+// impl Piece for Empty {}
