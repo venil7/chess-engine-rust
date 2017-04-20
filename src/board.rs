@@ -1,3 +1,4 @@
+use std::fmt;
 use field::Field;
 
 pub const LENGTH: usize = 64;
@@ -9,7 +10,7 @@ pub enum Player {
 }
 
 pub struct Board {
-    fields: Vec<Field>
+    fields: Vec<Field>,
 }
 
 impl Board {
@@ -19,6 +20,22 @@ impl Board {
     }
 
     pub fn fields(&self) -> &Vec<Field> {
-      &self.fields
+        &self.fields
+    }
+}
+
+impl fmt::Display for Board {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        let str = self.fields()
+            .iter()
+            .enumerate()
+            .fold("".to_string(), |acc, (idx, field)| {
+                let mut result = acc + &field.to_string();
+                if (idx + 1) % 8 == 0 {
+                    result = result + &"\n"
+                }
+                result
+            });
+        write!(formatter, "{}", str)
     }
 }
