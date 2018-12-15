@@ -1,32 +1,93 @@
+use crate::field::Field;
+use crate::piece::{Color, Piece};
 use std::fmt;
-use field::Field;
 
 pub const LENGTH: usize = 64;
 
-pub enum Player {
-    None,
-    CPU,
-    Human,
-}
-
 pub struct Board {
-    fields: Vec<Field>,
+    pub fields: [Field; LENGTH],
 }
 
 impl Board {
     pub fn new() -> Board {
-        let fields = (0..LENGTH).map(|_| Field::empty()).collect();
-        Board { fields: fields }
+        let fields = [Field::empty(); LENGTH];
+        Board { fields }
     }
-
-    pub fn fields(&self) -> &Vec<Field> {
-        &self.fields
+    pub fn default() -> Board {
+        let fields = [
+            Field::with(Piece::rook(Color::Black)),
+            Field::with(Piece::knight(Color::Black)),
+            Field::with(Piece::bishop(Color::Black)),
+            Field::with(Piece::queen(Color::Black)),
+            Field::with(Piece::king(Color::Black)),
+            Field::with(Piece::bishop(Color::Black)),
+            Field::with(Piece::knight(Color::Black)),
+            Field::with(Piece::rook(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::with(Piece::pawn(Color::Black)),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::empty(),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::pawn(Color::White)),
+            Field::with(Piece::rook(Color::White)),
+            Field::with(Piece::knight(Color::White)),
+            Field::with(Piece::bishop(Color::White)),
+            Field::with(Piece::queen(Color::White)),
+            Field::with(Piece::king(Color::White)),
+            Field::with(Piece::bishop(Color::White)),
+            Field::with(Piece::knight(Color::White)),
+            Field::with(Piece::rook(Color::White)),
+        ];
+        Board { fields }
     }
 }
 
 impl fmt::Display for Board {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        let str = self.fields()
+        let str = self
+            .fields
             .iter()
             .enumerate()
             .fold("".to_string(), |acc, (idx, field)| {

@@ -1,9 +1,9 @@
 [package]
-name = "chess"
-version = "0.1.0"
-authors = ["Art Deineka <art.deineka@darkruby.co.uk>"]
+name = "darkruby-chess"
+version = "0.2.0"
+authors = ["Art Deineka"]
+edition="2018"
+
+[lib]
 
 [dependencies]
-
-[[bin]]
-name = "main"

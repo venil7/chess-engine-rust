@@ -1,10 +1,9 @@
+use crate::piece::Piece;
 use std::fmt;
-use pieces::Piece;
 
-type BoxedPiece = Box<Piece>;
-
+#[derive(Clone, Copy, Debug)]
 pub struct Field {
-    piece: Option<BoxedPiece>,
+    piece: Option<Piece>,
 }
 
 impl Field {
@@ -12,11 +11,8 @@ impl Field {
         Field { piece: None }
     }
 
-    pub fn with<T>(piece: T) -> Field
-        where T: Piece + 'static
-    {
-        let boxed_piece = Box::new(piece);
-        Field { piece: Some(boxed_piece) }
+    pub fn with(piece: Piece) -> Field {
+        Field { piece: Some(piece) }
     }
 }
 

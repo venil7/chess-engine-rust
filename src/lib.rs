@@ -1,3 +1,4 @@
-pub mod field;
 pub mod board;
-pub mod pieces;
+pub mod field;
+pub mod piece;
+pub mod player;

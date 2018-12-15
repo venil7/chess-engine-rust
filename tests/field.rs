@@ -1,6 +1,5 @@
-extern crate chess;
-use chess::field;
-use chess::pieces::pawn::Pawn;
+use darkruby_chess::field;
+use darkruby_chess::piece::{Piece,Color};
 
 #[test]
 fn create_new_empty_field() {
@@ -10,7 +9,7 @@ fn create_new_empty_field() {
 
 #[test]
 fn create_new_non_empty_field() {
-    let pawn = Pawn {};
+    let pawn = Piece::pawn(Color::White);
     let field = field::Field::with(pawn);
     assert_eq!(field.to_string(), "[♙]");
 }

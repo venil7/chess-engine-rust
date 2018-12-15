@@ -1,8 +1,6 @@
-pub mod field;
-pub mod board;
-pub mod pieces;
+use darkruby_chess::*;
 
 fn main() {
-  let board = board::Board::new();
+  let board = board::Board::default();
   print!("{}", board.to_string());
 }
