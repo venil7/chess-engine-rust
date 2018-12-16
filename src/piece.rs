@@ -1,4 +1,10 @@
+use crate::board::Board;
+use crate::position::{Move, Position};
 use std::fmt;
+
+pub mod pawn;
+
+pub type PiecePosition = (Piece, Position);
 
 #[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Color {
@@ -34,4 +40,25 @@ impl fmt::Display for Piece {
     };
     write!(formatter, "{}", piece_str)
   }
+}
+
+pub fn piece_color(piece: &Piece) -> Color {
+  match piece {
+    Piece::Pawn(color) => *color,
+    Piece::Knight(color) => *color,
+    Piece::Rook(color) => *color,
+    Piece::Bishop(color) => *color,
+    Piece::Queen(color) => *color,
+    Piece::King(color) => *color,
+  }
+}
+
+pub fn possible_moves((piece, from): &PiecePosition, board: &Board) -> Vec<Move> {
+  match piece {
+    Piece::Pawn(_) => pawn::pawn_possible_moves(board, from),
+    _ => vec![],
+  }
+  .iter()
+  .map(|to| (*from, *to))
+  .collect()
 }

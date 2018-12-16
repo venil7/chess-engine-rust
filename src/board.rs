@@ -1,7 +1,9 @@
-use crate::field::Field;
-use crate::piece::{Color, Piece};
+use crate::field::{extract_piece, field_color, Field};
+use crate::piece::{possible_moves, Color, Piece, PiecePosition};
+use crate::position::{Move, Position};
 use std::fmt;
 
+// type PiecePosition = (Piece, Position);
 pub const LENGTH: usize = 64;
 
 pub struct Board {
@@ -82,6 +84,30 @@ impl Board {
         ];
         Board { fields }
     }
+    pub fn at(&self, position: &Position) -> Field {
+        self.fields[position.to_index()]
+    }
+    pub fn occupied_fields(&self, color: &Color) -> Vec<PiecePosition> {
+        self.fields
+            .iter()
+            .zip(0..LENGTH)
+            .filter(|(field, _)| {
+                if let Some(color_) = field_color(field) {
+                    color_ == *color
+                } else {
+                    false
+                }
+            })
+            .map(|(field, index)| (extract_piece(field), Position::from_index(index)))
+            .collect()
+    }
+
+    pub fn possible_moves(&self, color: &Color) -> Vec<Move> {
+        self.occupied_fields(color)
+            .iter()
+            .flat_map(|pp| possible_moves(pp, self))
+            .collect()
+    }
 }
 
 impl fmt::Display for Board {
@@ -93,7 +119,7 @@ impl fmt::Display for Board {
             .fold("".to_string(), |acc, (idx, field)| {
                 let mut result = acc + &field.to_string();
                 if (idx + 1) % 8 == 0 {
-                    result = result + &"\n"
+                    result += "\n"
                 }
                 result
             });

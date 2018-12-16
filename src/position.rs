@@ -1,12 +1,15 @@
+#[derive(Clone, Copy, Debug)]
 pub struct Position {
   pub row: i8,
   pub col: i8,
 }
 
+pub type Move = (Position, Position);
+
 impl Position {
-  pub fn from_index(index: i8) -> Position {
-    let col: i8 = index % 8;
-    let row: i8 = index / 8;
+  pub fn from_index(index: usize) -> Position {
+    let col = (index % 8) as i8;
+    let row = (index / 8) as i8;
     Position { row, col }
   }
 

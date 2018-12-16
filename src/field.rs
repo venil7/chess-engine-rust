@@ -1,4 +1,4 @@
-use crate::piece::Piece;
+use crate::piece::{piece_color, Color, Piece};
 use std::fmt;
 
 #[derive(Clone, Copy, Debug)]
@@ -14,5 +14,19 @@ impl fmt::Display for Field {
             Field::Empty => " ".to_string(),
         };
         write!(formatter, "[{}]", cell_str)
+    }
+}
+
+pub fn field_color(field: &Field) -> Option<Color> {
+    match field {
+        Field::Occupied(piece) => Some(piece_color(piece)),
+        Field::Empty => None,
+    }
+}
+
+pub fn extract_piece(field: &Field) -> Piece {
+    match field {
+        Field::Occupied(piece) => *piece,
+        _ => panic!("Can't extract piece from unnocupied field"),
     }
 }
