@@ -2,7 +2,12 @@ use crate::board::Board;
 use crate::position::{Move, Position};
 use std::fmt;
 
+pub mod bishop;
+pub mod king;
+pub mod knight;
 pub mod pawn;
+pub mod queen;
+pub mod rook;
 
 pub type PiecePosition = (Piece, Position);
 
@@ -10,6 +15,15 @@ pub type PiecePosition = (Piece, Position);
 pub enum Color {
   White,
   Black,
+}
+
+impl Color {
+  pub fn opposite(&self) -> Color {
+    match self {
+      Color::White => Color::Black,
+      _ => Color::White,
+    }
+  }
 }
 
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -55,8 +69,12 @@ pub fn piece_color(piece: &Piece) -> Color {
 
 pub fn possible_moves((piece, from): &PiecePosition, board: &Board) -> Vec<Move> {
   match piece {
-    Piece::Pawn(_) => pawn::pawn_possible_moves(board, from),
-    _ => vec![],
+    Piece::Pawn(color) => pawn::possible_moves(board, from, *color),
+    Piece::Rook(color) => rook::possible_moves(board, from, *color),
+    Piece::Knight(color) => knight::possible_moves(board, from, *color),
+    Piece::Bishop(color) => bishop::possible_moves(board, from, *color),
+    Piece::Queen(color) => queen::possible_moves(board, from, *color),
+    Piece::King(color) => king::possible_moves(board, from, *color),
   }
   .iter()
   .map(|to| (*from, *to))

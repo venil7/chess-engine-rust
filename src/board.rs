@@ -2,6 +2,7 @@ use crate::field::{extract_piece, field_color, Field};
 use crate::piece::{possible_moves, Color, Piece, PiecePosition};
 use crate::position::{Move, Position};
 use std::fmt;
+use std::ops;
 
 // type PiecePosition = (Piece, Position);
 pub const LENGTH: usize = 64;
@@ -84,9 +85,9 @@ impl Board {
         ];
         Board { fields }
     }
-    pub fn at(&self, position: &Position) -> Field {
-        self.fields[position.to_index()]
-    }
+    // pub fn at(&self, position: &Position) -> Field {
+    //     self.fields[position.to_index()]
+    // }
     pub fn occupied_fields(&self, color: &Color) -> Vec<PiecePosition> {
         self.fields
             .iter()
@@ -107,6 +108,13 @@ impl Board {
             .iter()
             .flat_map(|pp| possible_moves(pp, self))
             .collect()
+    }
+}
+
+impl ops::Index<Position> for Board {
+    type Output = Field;
+    fn index<'a>(&'a self, position: Position) -> &'a Field {
+        &self.fields[position.to_index()]
     }
 }
 
