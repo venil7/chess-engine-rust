@@ -85,9 +85,6 @@ impl Board {
         ];
         Board { fields }
     }
-    // pub fn at(&self, position: &Position) -> Field {
-    //     self.fields[position.to_index()]
-    // }
     pub fn occupied_fields(&self, color: &Color) -> Vec<PiecePosition> {
         self.fields
             .iter()
@@ -102,12 +99,21 @@ impl Board {
             .map(|(field, index)| (extract_piece(field), Position::from_index(index)))
             .collect()
     }
-
     pub fn possible_moves(&self, color: &Color) -> Vec<Move> {
         self.occupied_fields(color)
             .iter()
             .flat_map(|pp| possible_moves(pp, self))
             .collect()
+    }
+    pub fn make_move(&self, (from, to): Move) -> Board {
+        let (from_index, to_index) = (from.to_index(), to.to_index());
+        let field = self[from];
+
+        let mut fields = self.fields.clone();
+        fields[from_index] = Field::Empty;
+        fields[to_index] = field.clone();
+
+        Board { fields }
     }
 }
 

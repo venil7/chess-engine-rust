@@ -9,40 +9,85 @@ pub fn possible_moves(board: &Board, position: &Position, color: Color) -> Vec<P
     Color::Black => possible_moves_for_black(board, position),
   }
   .iter()
-  .fold(vec![], |mut acc, opt| {
-    if let Some(pos) = opt {
-      match board[*pos] {
-        Field::Occupied(piece) if piece_color(&piece) == color.opposite() => acc.push(*pos),
-        Field::Empty => acc.push(*pos),
-        _ => (),
-      }
-    }
-    acc
-  })
+  .map(|p| p.unwrap())
+  .collect()
 }
 
 pub fn possible_moves_for_white(board: &Board, position: &Position) -> Vec<Option<Position>> {
-  let first = (*position).up();
-  let mut base_positions: Vec<Option<Position>> =
-    vec![first, (*position).up_left(), (*position).up_right()];
-  if let Some(pos) = first {
-    if let Field::Empty = board[pos] {
-      base_positions.push((*position).up().up());
+  let first = position.up();
+  let mut base_positions: Vec<Option<Position>> = vec![];
+  if !occupied(board, first) {
+    base_positions.push(first);
+    if start_position(first, Color::White) {
+      let second = first.up();
+      if !occupied(board, second) {
+        base_positions.push(second);
+      }
     }
   }
+
+  let mut attack: Vec<Option<Position>> = vec![position.up_left(), position.up_right()]
+    .iter()
+    .filter(|pos| attackable(board, **pos, Color::White))
+    .map(|pos| *pos)
+    .collect();
+
+  base_positions.append(&mut attack);
 
   base_positions
 }
 
 pub fn possible_moves_for_black(board: &Board, position: &Position) -> Vec<Option<Position>> {
-  let first = (*position).down();
-  let mut base_positions: Vec<Option<Position>> =
-    vec![first, (*position).down_left(), (*position).down_right()];
-  if let Some(pos) = first {
-    if let Field::Empty = board[pos] {
-      base_positions.push((*position).down().down());
+  let first = position.down();
+  let mut base_positions: Vec<Option<Position>> = vec![];
+  if !occupied(board, first) {
+    base_positions.push(first);
+    if start_position(first, Color::Black) {
+      let second = first.down();
+      if !occupied(board, second) {
+        base_positions.push(second);
+      }
     }
   }
 
+  let mut attack: Vec<Option<Position>> = vec![position.down_left(), position.down_right()]
+    .iter()
+    .filter(|pos| attackable(board, **pos, Color::Black))
+    .map(|pos| *pos)
+    .collect();
+
+  base_positions.append(&mut attack);
+
   base_positions
+}
+
+fn occupied(board: &Board, position: Option<Position>) -> bool {
+  match position {
+    None => false,
+    Some(pos) => match board[pos] {
+      Field::Empty => false,
+      _ => true,
+    },
+  }
+}
+
+fn start_position(position: Option<Position>, color: Color) -> bool {
+  match position {
+    None => false,
+    Some(pos) => match (pos, color) {
+      (Position { row: 1, .. }, Color::Black) => true,
+      (Position { row: 6, .. }, Color::White) => true,
+      _ => false,
+    },
+  }
+}
+
+fn attackable(board: &Board, position: Option<Position>, color: Color) -> bool {
+  match position {
+    None => false,
+    Some(pos) => match board[pos] {
+      Field::Empty => false,
+      Field::Occupied(piece) => piece_color(&piece) == color.opposite(),
+    },
+  }
 }
