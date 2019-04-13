@@ -1,6 +1,6 @@
 use crate::board::Board;
 use crate::field::Field;
-use crate::piece::{piece_color, Color};
+use crate::piece::Color;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Position {
@@ -135,7 +135,7 @@ impl Position {
     while let Some(pos) = stepper(current) {
       match board[pos] {
         Field::Empty => res.push(pos),
-        Field::Occupied(piece) if piece_color(&piece) == color => {
+        Field::Occupied(piece) if (piece.color() == color) => {
           res.push(pos);
           break;
         }

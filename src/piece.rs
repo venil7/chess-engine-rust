@@ -56,7 +56,7 @@ impl fmt::Display for Piece {
   }
 }
 
-pub fn piece_color(piece: &Piece) -> Color {
+fn piece_color(piece: &Piece) -> Color {
   match piece {
     Piece::Pawn(color) => *color,
     Piece::Knight(color) => *color,

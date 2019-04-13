@@ -1,4 +1,4 @@
-use crate::field::{extract_piece, field_color, Field};
+use crate::field::Field;
 use crate::piece::{Color, Piece, PiecePosition};
 use crate::position::{Move, Position};
 use std::fmt;
@@ -90,13 +90,13 @@ impl Board {
       .iter()
       .zip(0..LENGTH)
       .filter(|(field, _)| {
-        if let Some(color_) = field_color(field) {
+        if let Some(color_) = field.color() {
           color_ == *color
         } else {
           false
         }
       })
-      .map(|(field, index)| (extract_piece(field), Position::from_index(index)))
+      .map(|(field, index)| (field.piece(), Position::from_index(index)))
       .collect()
   }
   pub fn possible_moves(&self, color: &Color) -> Vec<Move> {

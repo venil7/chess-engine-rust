@@ -1,6 +1,5 @@
 use crate::board::Board;
 use crate::field::Field;
-use crate::piece::piece_color;
 use crate::piece::{Color, Piece};
 use crate::position::{Move, Position};
 
@@ -34,7 +33,7 @@ pub fn score(board: &Board, color: Color) -> f32 {
     .fold(0.0, |acc, (index, field)| match field {
       Field::Occupied(piece) => {
         let w = weight(*piece, Position::from_index(index));
-        if piece_color(piece) == color {
+        if piece.color() == color {
           acc + w
         } else {
           acc - w
