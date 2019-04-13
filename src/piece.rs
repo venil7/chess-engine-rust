@@ -67,7 +67,7 @@ pub fn piece_color(piece: &Piece) -> Color {
   }
 }
 
-pub fn possible_moves((piece, from): &PiecePosition, board: &Board) -> Vec<Move> {
+fn possible_moves(piece: &Piece, from: &Position, board: &Board) -> Vec<Move> {
   match piece {
     Piece::Pawn(color) => pawn::possible_moves(board, from, *color),
     Piece::Rook(color) => rook::possible_moves(board, from, *color),
@@ -79,4 +79,13 @@ pub fn possible_moves((piece, from): &PiecePosition, board: &Board) -> Vec<Move>
   .iter()
   .map(|to| (*from, *to))
   .collect()
+}
+
+impl Piece {
+  pub fn color(&self) -> Color {
+    piece_color(self)
+  }
+  pub fn possible_moves(&self, from: &Position, board: &Board) -> Vec<Move> {
+    possible_moves(self, from, board)
+  }
 }
